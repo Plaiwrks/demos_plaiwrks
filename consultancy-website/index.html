@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Atelier Haar — Kapsalon in Amsterdam aan de Keizersgracht. Vakmanschap, elegantie en persoonlijke aandacht. Dames, heren, kleuren, bruidsstyling.">
+    <meta name="theme-color" content="#1E120D">
+    <meta property="og:title" content="Atelier Haar — Waar stijl begint">
+    <meta property="og:description" content="Kapsalon in het hart van Amsterdam. Vakmanschap, elegantie en persoonlijke aandacht aan de Keizersgracht.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="nl_NL">
+    <title>Atelier Haar — Waar stijl begint</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%E2%9C%82</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+        :root{
+            --rose:#9B2948;
+            --rose-light:#b83358;
+            --rose-soft:#D4A0A0;
+            --gold:#C5A55A;
+            --gold-light:#d4b76e;
+            --gold-muted:#B8A88A;
+            --blush:#F5E6E0;
+            --cream:#FDF8F5;
+            --cream-dark:#F3EBE4;
+            --champagne:#EDE4DA;
+            --text:#2C1810;
+            --text-soft:#5C4033;
+            --white:#fff;
+            --dark:#1E120D;
+        }
+
+        html{scroll-behavior:smooth;overflow-x:hidden}
+        body{
+            font-family:'Jost',sans-serif;font-weight:400;
+            color:var(--text);background:var(--cream);
+            line-height:1.7;overflow-x:hidden;
+        }
+        h1,h2,h3,h4,h5{font-family:'Cormorant Garamond',serif;font-weight:500}
+        img,video{max-width:100%;display:block}
+        a{text-decoration:none;color:inherit}
+
+        /* ══════ VIDEO CELL ══════ */
+        .vcell{position:relative;overflow:hidden;border-radius:20px;background:var(--dark)}
+        .vcell video{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s cubic-bezier(.22,1,.36,1)}
+        .vcell:hover video{transform:scale(1.05)}
+        .vcell-overlay{
+            position:absolute;inset:0;
+            background:linear-gradient(180deg,transparent 40%,rgba(30,18,13,.65) 100%);
+            display:flex;align-items:flex-end;padding:1.5rem;
+            opacity:0;transition:opacity .5s cubic-bezier(.22,1,.36,1);
+        }
+        .vcell:hover .vcell-overlay{opacity:1}
+        .vcell-overlay span{
+            color:var(--cream);font-family:'Cormorant Garamond',serif;
+            font-size:1.1rem;font-style:italic;font-weight:500;
+        }
+
+        /* ══════ NAV ══════ */
+        nav{
+            position:fixed;top:0;left:0;right:0;z-index:1000;
+            padding:1.5rem 3rem;
+            display:flex;align-items:center;justify-content:space-between;
+            transition:all .5s cubic-bezier(.22,1,.36,1);
+        }
+        nav.scrolled{
+            background:rgba(253,248,245,.93);backdrop-filter:blur(20px);
+            padding:.85rem 3rem;box-shadow:0 1px 30px rgba(44,24,16,.06);
+        }
+        .nav-logo{
+            font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:600;
+            color:var(--cream);transition:color .5s;letter-spacing:1px;
+        }
+        nav.scrolled .nav-logo{color:var(--text)}
+        .nav-logo em{font-style:italic;color:var(--gold)}
+        .nav-links{list-style:none;display:flex;gap:2rem;align-items:center}
+        .nav-links a{
+            color:rgba(253,248,245,.65);font-size:.7rem;
+            text-transform:uppercase;letter-spacing:3px;font-weight:400;
+            transition:color .3s;
+        }
+        nav.scrolled .nav-links a{color:var(--text-soft)}
+        .nav-links a:hover{color:var(--gold)}
+        .nav-cta-link{
+            background:var(--gold)!important;color:var(--dark)!important;
+            padding:.55rem 1.5rem;border-radius:50px;transition:all .3s!important;
+            font-weight:500!important;
+        }
+        .nav-cta-link:hover{background:var(--gold-light)!important;transform:scale(1.03)}
+        .hamburger{
+            display:none;background:none;border:none;cursor:pointer;
+            flex-direction:column;gap:5px;padding:.5rem;z-index:1001;
+        }
+        .hamburger span{display:block;width:24px;height:1.5px;background:var(--cream);transition:.3s}
+        nav.scrolled .hamburger span{background:var(--text)}
+        .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+        .hamburger.active span:nth-child(2){opacity:0}
+        .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+
+        /* ══════ HERO ══════ */
+        .hero{
+            min-height:100vh;position:relative;overflow:hidden;
+            display:flex;align-items:center;justify-content:center;
+            background:var(--dark);
+        }
+        .hero-video-bg{position:absolute;inset:0;z-index:0}
+        .hero-video-bg video{
+            width:100%;height:100%;object-fit:cover;
+            filter:brightness(.42) saturate(.8);
+        }
+        .hero::after{
+            content:'';position:absolute;inset:0;z-index:1;
+            background:linear-gradient(180deg,rgba(30,18,13,.3) 0%,rgba(30,18,13,.1) 50%,rgba(30,18,13,.5) 100%);
+            pointer-events:none;
+        }
+        .hero-content{position:relative;z-index:2;text-align:center;max-width:800px;padding:2rem}
+        .hero-overline{
+            font-size:.65rem;text-transform:uppercase;letter-spacing:6px;
+            color:var(--gold);margin-bottom:2rem;font-weight:400;
+        }
+        .hero h1{
+            font-size:clamp(3.5rem,9vw,8rem);color:var(--cream);
+            line-height:.88;letter-spacing:-2px;margin-bottom:1.5rem;font-weight:300;
+        }
+        .hero h1 em{
+            display:block;font-style:italic;font-weight:400;
+            color:var(--gold);font-size:.4em;letter-spacing:4px;margin-top:.8rem;
+        }
+        .hero-tagline{
+            font-family:'Cormorant Garamond',serif;font-style:italic;
+            font-size:1.2rem;color:rgba(253,248,245,.45);
+            margin-bottom:3rem;font-weight:300;letter-spacing:.5px;
+        }
+        .btn-primary{
+            display:inline-block;background:var(--gold);color:var(--dark);
+            padding:1rem 3rem;border-radius:50px;
+            font-family:'Jost',sans-serif;font-weight:500;font-size:.72rem;
+            text-transform:uppercase;letter-spacing:3px;border:none;cursor:pointer;
+            transition:all .4s cubic-bezier(.22,1,.36,1);
+        }
+        .btn-primary:hover{
+            background:var(--gold-light);transform:translateY(-2px);
+            box-shadow:0 12px 35px rgba(197,165,90,.25);
+        }
+        .hero-scroll{
+            position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
+            display:flex;flex-direction:column;align-items:center;gap:.4rem;
+            color:rgba(253,248,245,.3);font-size:.55rem;text-transform:uppercase;
+            letter-spacing:3px;animation:drift 3s ease-in-out infinite;z-index:2;
+        }
+        @keyframes drift{
+            0%,100%{transform:translateX(-50%) translateY(0)}
+            50%{transform:translateX(-50%) translateY(8px)}
+        }
+
+        /* ══════ GOLD DIVIDER LINE ══════ */
+        .gold-line{
+            width:60px;height:1px;background:var(--gold);margin:0 auto 2rem;opacity:.5;
+        }
+
+        /* ══════ WAVE ══════ */
+        .wave{width:100%;overflow:hidden;line-height:0;margin-top:-1px}
+        .wave svg{display:block;width:100%;height:auto}
+
+        /* ══════ SECTION BASES ══════ */
+        .s-cream{background:var(--cream)}
+        .s-dark{background:var(--dark);color:var(--cream)}
+        .s-blush{background:var(--blush)}
+        .s-champagne{background:var(--champagne)}
+        .section-pad{padding:8rem 3rem}
+
+        .section-header{text-align:center;max-width:550px;margin:0 auto 4.5rem}
+        .section-header .label{
+            font-size:.62rem;text-transform:uppercase;letter-spacing:5px;
+            color:var(--gold);margin-bottom:.75rem;font-weight:400;
+        }
+        .section-header h2{
+            font-size:clamp(2.2rem,4.5vw,3.2rem);margin-bottom:.75rem;
+            line-height:1.05;font-weight:400;letter-spacing:-0.5px;
+        }
+        .s-dark .section-header h2{color:var(--cream)}
+        .section-header p{color:var(--text-soft);font-size:.85rem;font-weight:300}
+        .s-dark .section-header p{color:rgba(253,248,245,.4)}
+
+        /* ══════ OVER ONS ══════ */
+        .over-ons-inner{
+            max-width:1200px;margin:0 auto;
+            display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;
+        }
+        .over-ons-vid{position:relative}
+        .over-ons-vid .vcell{height:580px;border-radius:200px 200px 40px 40px}
+        .over-ons-vid .float-tag{
+            position:absolute;bottom:30px;right:-20px;
+            background:var(--gold);color:var(--dark);padding:1rem 1.5rem;
+            border-radius:16px;font-size:.62rem;text-transform:uppercase;
+            letter-spacing:2.5px;font-weight:500;
+            box-shadow:0 10px 30px rgba(197,165,90,.25);z-index:2;
+        }
+        .over-ons-content .section-label{
+            font-size:.62rem;text-transform:uppercase;letter-spacing:5px;
+            color:var(--gold);margin-bottom:1rem;font-weight:400;
+        }
+        .over-ons-content h2{
+            font-size:clamp(2rem,4vw,3rem);color:var(--text);
+            margin-bottom:.4rem;line-height:1.05;font-weight:400;
+        }
+        .over-ons-content h2 em{color:var(--rose);font-style:italic;font-weight:400}
+        .over-ons-content .intro{
+            font-family:'Cormorant Garamond',serif;font-style:italic;
+            color:var(--gold-muted);font-size:1.05rem;margin-bottom:1.75rem;font-weight:400;
+        }
+        .over-ons-content p{
+            color:var(--text-soft);font-size:.85rem;margin-bottom:1.25rem;
+            line-height:1.9;font-weight:300;
+        }
+        .stats-row{display:flex;gap:3rem;margin-top:2.5rem;flex-wrap:wrap}
+        .stat-item{text-align:center}
+        .stat-item h4{font-size:2.2rem;color:var(--rose);line-height:1;font-weight:400}
+        .stat-item span{font-size:.58rem;color:var(--gold-muted);text-transform:uppercase;letter-spacing:2px}
+
+        /* ══════ DIENSTEN ══════ */
+        .diensten-grid{
+            max-width:1200px;margin:0 auto;
+            display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;
+        }
+        .dienst-card{
+            background:rgba(253,248,245,.05);
+            border:1px solid rgba(197,165,90,.1);
+            padding:2.5rem;border-radius:24px;
+            transition:all .5s cubic-bezier(.22,1,.36,1);
+            position:relative;overflow:hidden;
+        }
+        .dienst-card:hover{
+            background:var(--rose);
+            border-color:var(--gold);
+            transform:translateY(-6px);
+            box-shadow:0 25px 50px rgba(155,41,72,.2);
+        }
+        .dienst-card:hover .dienst-name,
+        .dienst-card:hover .dienst-desc{color:rgba(253,248,245,.8)}
+        .dienst-card:hover .dienst-price{color:var(--gold)}
+        .dienst-card:hover .dienst-icon{background:rgba(253,248,245,.12)}
+        .dienst-icon{
+            width:50px;height:50px;background:rgba(197,165,90,.1);border-radius:14px;
+            display:flex;align-items:center;justify-content:center;
+            margin-bottom:1.25rem;transition:all .4s;
+        }
+        .dienst-icon svg{
+            width:22px;height:22px;stroke:var(--gold);fill:none;
+            stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;
+        }
+        .dienst-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:500;color:var(--cream);margin-bottom:.3rem;transition:color .3s}
+        .dienst-price{font-size:1.5rem;font-weight:500;color:var(--gold);margin-bottom:.75rem;transition:color .3s;font-family:'Cormorant Garamond',serif}
+        .dienst-desc{font-size:.72rem;color:rgba(253,248,245,.4);line-height:1.7;transition:color .3s;font-weight:300}
+
+        /* ══════ GALERIJ ══════ */
+        .galerij-grid{
+            max-width:1300px;margin:0 auto;
+            display:grid;grid-template-columns:repeat(12,1fr);
+            grid-auto-rows:140px;gap:1rem;
+        }
+        .galerij-grid .vcell:nth-child(1){grid-column:1/6;grid-row:1/4}
+        .galerij-grid .vcell:nth-child(2){grid-column:6/9;grid-row:1/3}
+        .galerij-grid .vcell:nth-child(3){grid-column:9/13;grid-row:1/4}
+        .galerij-grid .vcell:nth-child(4){grid-column:1/4;grid-row:4/6}
+        .galerij-grid .vcell:nth-child(5){grid-column:4/8;grid-row:4/7}
+        .galerij-grid .vcell:nth-child(6){grid-column:8/13;grid-row:4/6}
+        .galerij-grid .vcell:nth-child(7){grid-column:6/9;grid-row:3/4}
+        .galerij-grid .vcell:nth-child(8){grid-column:1/4;grid-row:6/8}
+
+        /* ══════ VIDEO BREAK ══════ */
+        .video-break{
+            height:55vh;position:relative;overflow:hidden;
+            display:flex;align-items:center;justify-content:center;
+        }
+        .video-break video{
+            position:absolute;inset:0;width:100%;height:100%;
+            object-fit:cover;filter:brightness(.25) saturate(.6);
+        }
+        .video-break .vb-content{position:relative;z-index:2;text-align:center;padding:2rem}
+        .video-break .vb-content h2{
+            font-size:clamp(2rem,5vw,4rem);font-style:italic;
+            font-weight:300;color:var(--cream);margin-bottom:.5rem;
+        }
+        .video-break .vb-content p{
+            font-size:.7rem;color:var(--gold);letter-spacing:4px;text-transform:uppercase;
+        }
+
+        /* ══════ AFSPRAAK ══════ */
+        .afspraak-inner{max-width:700px;margin:0 auto}
+        .afspraak-form{
+            background:var(--white);
+            border:1px solid rgba(197,165,90,.12);
+            border-radius:28px;padding:3rem;
+            box-shadow:0 20px 60px rgba(44,24,16,.04);
+        }
+        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+        .form-group{margin-bottom:1.25rem}
+        .form-group label{
+            display:block;font-size:.62rem;color:var(--gold-muted);
+            margin-bottom:.5rem;text-transform:uppercase;letter-spacing:2px;font-weight:400;
+        }
+        .form-group input,.form-group select,.form-group textarea{
+            width:100%;padding:.9rem 1.15rem;background:var(--cream);
+            border:1px solid rgba(197,165,90,.12);border-radius:14px;
+            color:var(--text);font-family:'Jost',sans-serif;
+            font-size:.85rem;font-weight:400;outline:none;transition:all .3s;
+        }
+        .form-group input::placeholder,.form-group textarea::placeholder{color:var(--gold-muted)}
+        .form-group input:focus,.form-group select:focus,.form-group textarea:focus{
+            border-color:var(--gold);box-shadow:0 0 0 3px rgba(197,165,90,.08);
+        }
+        .form-group select{cursor:pointer}
+        .form-group select option{background:var(--cream)}
+        .form-group textarea{min-height:100px;resize:vertical}
+        .form-error{font-size:.62rem;color:var(--rose);margin-top:.35rem;display:none}
+        .form-group.error .form-error{display:block}
+        .form-group.error input,.form-group.error select,.form-group.error textarea{border-color:var(--rose)}
+        .btn-submit{
+            width:100%;padding:1.1rem;background:var(--gold);color:var(--dark);
+            font-family:'Jost',sans-serif;font-weight:500;font-size:.72rem;
+            text-transform:uppercase;letter-spacing:3px;border:none;border-radius:50px;
+            cursor:pointer;transition:all .4s;margin-top:.75rem;
+        }
+        .btn-submit:hover{
+            background:var(--gold-light);transform:translateY(-2px);
+            box-shadow:0 12px 30px rgba(197,165,90,.25);
+        }
+        .form-success{display:none;text-align:center;padding:3rem 1rem}
+        .form-success h3{font-size:2.2rem;color:var(--rose);margin-bottom:.75rem;font-weight:400}
+        .form-success p{color:var(--text-soft);font-size:.85rem;font-weight:300}
+
+        /* ══════ CONTACT ══════ */
+        .contact-inner{
+            max-width:1100px;margin:0 auto;
+            display:grid;grid-template-columns:1fr 1fr;gap:5rem;
+        }
+        .contact-block h3{font-size:1.8rem;color:var(--text);margin-bottom:.25rem;font-weight:400}
+        .contact-block .subtitle{
+            font-family:'Cormorant Garamond',serif;font-style:italic;
+            color:var(--gold-muted);font-size:1rem;margin-bottom:2rem;font-weight:400;
+        }
+        .hours-table{width:100%;border-collapse:collapse}
+        .hours-table tr{border-bottom:1px solid rgba(197,165,90,.08)}
+        .hours-table td{padding:1rem 0;font-size:.85rem;font-weight:300}
+        .hours-table td:first-child{font-weight:400;color:var(--text)}
+        .hours-table td:last-child{text-align:right;color:var(--text-soft)}
+        .hours-table .closed{color:var(--rose);font-style:italic}
+        .contact-detail{display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem}
+        .contact-detail-icon{
+            width:46px;height:46px;flex-shrink:0;background:var(--blush);
+            border-radius:14px;display:flex;align-items:center;justify-content:center;
+        }
+        .contact-detail-icon svg{width:20px;height:20px;stroke:var(--rose);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+        .contact-detail p{font-size:.85rem;color:var(--text-soft);font-weight:300}
+        .contact-detail a{color:var(--rose);font-weight:400}
+        .social-links{display:flex;gap:.75rem;margin-top:2rem}
+        .social-links a{
+            width:46px;height:46px;background:var(--blush);border-radius:14px;
+            display:flex;align-items:center;justify-content:center;transition:all .3s;
+        }
+        .social-links a:hover{background:var(--rose)}
+        .social-links a:hover svg{fill:var(--cream)}
+        .social-links svg{width:18px;height:18px;fill:var(--text-soft);transition:fill .3s}
+
+        /* ══════ TESTIMONIALS ══════ */
+        .testimonials-grid{
+            max-width:1100px;margin:0 auto;
+            display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;align-items:start;
+        }
+        .testimonial-card{
+            background:var(--white);padding:2.5rem;border-radius:24px;
+            border:1px solid rgba(197,165,90,.06);transition:all .4s;
+            box-shadow:0 4px 15px rgba(44,24,16,.02);
+        }
+        .testimonial-card:nth-child(2){transform:translateY(25px)}
+        .testimonial-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(44,24,16,.06)}
+        .testimonial-card:nth-child(2):hover{transform:translateY(21px)}
+        .testimonial-stars{display:flex;gap:3px;margin-bottom:1rem}
+        .testimonial-stars svg{width:14px;height:14px;fill:var(--gold)}
+        .testimonial-card p{
+            font-family:'Cormorant Garamond',serif;font-style:italic;
+            font-size:1rem;color:var(--text-soft);line-height:1.8;
+            margin-bottom:1.5rem;font-weight:400;
+        }
+        .testimonial-author{display:flex;align-items:center;gap:.75rem}
+        .testimonial-avatar{
+            width:42px;height:42px;border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            font-weight:500;font-size:.85rem;color:var(--cream);
+            border:1.5px solid var(--gold);
+        }
+        .testimonial-author-info h5{font-family:'Jost',sans-serif;font-size:.78rem;color:var(--text);font-weight:500}
+        .testimonial-author-info span{font-size:.62rem;color:var(--gold-muted);letter-spacing:.5px}
+
+        /* ══════ FOOTER ══════ */
+        footer{background:var(--dark);padding:5rem 3rem 2rem;color:rgba(253,248,245,.4)}
+        .footer-inner{max-width:1100px;margin:0 auto}
+        .footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+        .footer-brand .logo{
+            font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:500;
+            color:var(--cream);display:block;margin-bottom:1rem;letter-spacing:1px;
+        }
+        .footer-brand .logo em{font-style:italic;color:var(--gold)}
+        .footer-brand p{font-size:.78rem;line-height:1.8;max-width:280px;font-weight:300}
+        .footer-col h4{
+            color:var(--gold);font-size:.6rem;font-family:'Jost',sans-serif;
+            text-transform:uppercase;letter-spacing:3px;margin-bottom:1.5rem;font-weight:400;
+        }
+        .footer-col ul{list-style:none}
+        .footer-col li{margin-bottom:.75rem}
+        .footer-col a{font-size:.78rem;transition:color .3s;font-weight:300}
+        .footer-col a:hover{color:var(--gold)}
+        .footer-bottom{
+            border-top:1px solid rgba(197,165,90,.08);padding-top:2rem;
+            display:flex;justify-content:space-between;align-items:center;font-size:.68rem;
+            position:relative;
+        }
+        .pw-watermark{
+            display:flex;align-items:center;gap:.4rem;
+            opacity:.25;transition:opacity .3s;
+        }
+        .pw-watermark:hover{opacity:.45}
+        .pw-watermark svg{width:18px;height:18px}
+        .pw-watermark span{
+            font-size:.55rem;letter-spacing:1.5px;text-transform:uppercase;
+            color:rgba(253,248,245,.4);
+        }
+        .footer-social{display:flex;gap:.5rem}
+        .footer-social a{
+            width:36px;height:36px;background:rgba(253,248,245,.04);border-radius:10px;
+            display:flex;align-items:center;justify-content:center;transition:background .3s;
+        }
+        .footer-social a:hover{background:rgba(253,248,245,.08)}
+        .footer-social svg{width:14px;height:14px;fill:rgba(253,248,245,.4)}
+
+        /* ══════ SCROLL ANIMATIONS ══════ */
+        .reveal{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
+        .reveal.vis{opacity:1;transform:translateY(0)}
+        .reveal-l{opacity:0;transform:translateX(-50px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
+        .reveal-l.vis{opacity:1;transform:translateX(0)}
+        .reveal-r{opacity:0;transform:translateX(50px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
+        .reveal-r.vis{opacity:1;transform:translateX(0)}
+        .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}.d5{transition-delay:.5s}
+
+        /* ══════ SKIP TO CONTENT ══════ */
+        .skip-link{
+            position:absolute;top:-100%;left:50%;transform:translateX(-50%);
+            background:var(--gold);color:var(--dark);padding:.75rem 1.5rem;
+            border-radius:0 0 12px 12px;font-size:.75rem;font-weight:500;
+            z-index:9999;transition:top .3s;
+        }
+        .skip-link:focus{top:0}
+
+        /* ══════ SCROLL TO TOP ══════ */
+        .scroll-top{
+            position:fixed;bottom:2rem;right:2rem;z-index:999;
+            width:48px;height:48px;border-radius:50%;
+            background:var(--gold);color:var(--dark);border:none;
+            cursor:pointer;display:flex;align-items:center;justify-content:center;
+            opacity:0;transform:translateY(20px);
+            transition:all .4s cubic-bezier(.22,1,.36,1);
+            pointer-events:none;
+            box-shadow:0 8px 25px rgba(197,165,90,.3);
+        }
+        .scroll-top.visible{opacity:1;transform:translateY(0);pointer-events:auto}
+        .scroll-top:hover{background:var(--gold-light);transform:translateY(-2px)}
+        .scroll-top svg{width:20px;height:20px}
+
+        /* ══════ RESPONSIVE ══════ */
+        @media(max-width:1024px){
+            .over-ons-inner{grid-template-columns:1fr;gap:3rem}
+            .over-ons-vid .vcell{height:420px}
+            .diensten-grid{grid-template-columns:repeat(2,1fr)}
+            .galerij-grid{grid-template-columns:1fr 1fr;grid-auto-rows:200px}
+            .galerij-grid .vcell:nth-child(n){grid-column:auto;grid-row:auto}
+            .galerij-grid .vcell:nth-child(1){grid-column:span 2;grid-row:span 2}
+            .contact-inner{grid-template-columns:1fr;gap:3rem}
+            .testimonials-grid{grid-template-columns:1fr;max-width:480px}
+            .testimonial-card:nth-child(2){transform:none}
+            .testimonial-card:nth-child(2):hover{transform:translateY(-4px)}
+            .footer-grid{grid-template-columns:1fr 1fr}
+        }
+        @media(max-width:900px){
+            .hamburger{display:flex}
+            .nav-links{
+                display:none;position:absolute;top:100%;left:0;right:0;
+                background:rgba(253,248,245,.97);backdrop-filter:blur(20px);
+                flex-direction:column;padding:2rem 1.5rem;gap:1rem;
+                box-shadow:0 20px 40px rgba(0,0,0,.06);
+            }
+            .nav-links.active{display:flex}
+            .nav-links a{color:var(--text)!important}
+            .nav-cta-link{color:var(--dark)!important}
+        }
+        @media(max-width:768px){
+            nav{padding:1rem 1.5rem}nav.scrolled{padding:.75rem 1.5rem}
+            .nav-links{
+                display:none;position:absolute;top:100%;left:0;right:0;
+                background:rgba(253,248,245,.97);backdrop-filter:blur(20px);
+                flex-direction:column;padding:2rem 1.5rem;gap:1rem;
+                box-shadow:0 20px 40px rgba(0,0,0,.06);
+            }
+            .nav-links.active{display:flex}
+            .nav-links a{color:var(--text)!important}
+            .section-pad{padding:5rem 1.5rem}
+            .hero h1{font-size:3.5rem}
+            .diensten-grid{grid-template-columns:1fr}
+            .galerij-grid{grid-template-columns:1fr 1fr;grid-auto-rows:160px}
+            .galerij-grid .vcell:nth-child(1){grid-column:span 1;grid-row:span 1}
+            .form-row{grid-template-columns:1fr}
+            .afspraak-form{padding:2rem 1.5rem}
+            .stats-row{justify-content:center}
+            .footer-grid{grid-template-columns:1fr;gap:2rem}
+            .footer-bottom{flex-direction:column;gap:1rem;text-align:center}
+        }
+    </style>
+</head>
+<body>
+
+<a href="#over-ons" class="skip-link">Ga naar inhoud</a>
+
+<!-- ══════ NAV ══════ -->
+<nav id="mainNav" role="navigation" aria-label="Hoofdnavigatie">
+    <a href="#" class="nav-logo" aria-label="Atelier Haar — Startpagina">Atelier <em>Haar</em></a>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="#over-ons">Over Ons</a></li>
+        <li><a href="#diensten">Diensten</a></li>
+        <li><a href="#galerij">Galerij</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#afspraak" class="nav-cta-link">Afspraak</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- ══════ HERO ══════ -->
+<section class="hero" id="hero">
+    <div class="hero-video-bg">
+        <video autoplay muted loop playsinline>
+            <source src="hero-video.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="hero-content">
+        <p class="hero-overline reveal">Amsterdam &mdash; Keizersgracht 142</p>
+        <h1 class="reveal d1">Atelier<br>Haar<em>"Waar stijl begint"</em></h1>
+        <p class="hero-tagline reveal d2">Vakmanschap, elegantie en persoonlijke aandacht in het hart van de grachtengordel</p>
+        <a href="#afspraak" class="btn-primary reveal d3">Maak een afspraak</a>
+    </div>
+    <div class="hero-scroll">
+        <span>Scroll</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+</section>
+
+<!-- wave -->
+<div class="wave"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><path fill="#FDF8F5" d="M0,120 C320,30 620,100 960,55 C1120,35 1320,80 1440,45 L1440,120Z"/></svg></div>
+
+<!-- ══════ OVER ONS ══════ -->
+<section class="s-cream section-pad" id="over-ons">
+    <div class="over-ons-inner">
+        <div class="over-ons-vid reveal-l">
+            <div class="vcell">
+                <video autoplay muted loop playsinline>
+                    <source src="over-ons-video.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="float-tag">Est. 2014</div>
+        </div>
+        <div class="over-ons-content">
+            <p class="section-label reveal">Ons verhaal</p>
+            <h2 class="reveal d1">Meer dan knippen.<br><em>Een ervaring.</em></h2>
+            <p class="intro reveal d2">Waar ambacht en elegantie samenkomen</p>
+            <p class="reveal d3">Atelier Haar is in 2014 geboren uit een passie voor tijdloze schoonheid. In ons intieme salon aan de Keizersgracht creëren we een wereld waar je even kunt ontsnappen — waar elke behandeling voelt als een moment van pure luxe.</p>
+            <p class="reveal d4">Met oog voor detail, de finest producten en een team dat leeft voor het vak, maken we van elk bezoek een bijzondere ervaring. Kom binnen, neem plaats, en laat je verwennen.</p>
+            <div class="stats-row">
+                <div class="stat-item reveal d3"><h4>12+</h4><span>Jaar ervaring</span></div>
+                <div class="stat-item reveal d4"><h4>500+</h4><span>Tevreden klanten</span></div>
+                <div class="stat-item reveal d5"><h4>100%</h4><span>Duurzaam</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- wave -->
+<div class="wave" style="background:var(--cream)"><svg viewBox="0 0 1440 100" preserveAspectRatio="none"><path fill="#1E120D" d="M0,0 C240,90 480,20 720,60 C960,100 1200,30 1440,70L1440,100 0,100Z"/></svg></div>
+
+<!-- ══════ DIENSTEN ══════ -->
+<section class="s-dark section-pad" id="diensten">
+    <div class="section-header reveal">
+        <p class="label">Ons aanbod</p>
+        <h2>Diensten & Prijzen</h2>
+        <div class="gold-line"></div>
+        <p>Van een subtiele opfrisbeurt tot een complete transformatie.</p>
+    </div>
+    <div class="diensten-grid">
+        <div class="dienst-card reveal">
+            <div class="dienst-icon"><svg viewBox="0 0 24 24"><path d="M6 2v6M18 2v6M6 18v4M18 18v4M14 6a4 4 0 01-4 4H6M18 6a4 4 0 00-4 4"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg></div>
+            <div class="dienst-name">Dames Knippen</div>
+            <div class="dienst-price">&euro;45</div>
+            <div class="dienst-desc">Wassen, knippen en stylen met persoonlijk advies voor jouw ideale coupe.</div>
+        </div>
+        <div class="dienst-card reveal d1">
+            <div class="dienst-icon"><svg viewBox="0 0 24 24"><path d="M6 2v6M18 2v6M6 18v4M18 18v4M14 6a4 4 0 01-4 4H6M18 6a4 4 0 00-4 4"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg></div>
+            <div class="dienst-name">Heren Knippen</div>
+            <div class="dienst-price">&euro;28</div>
+            <div class="dienst-desc">Vakkundige herenknippen met aandacht voor detail en stijl.</div>
+        </div>
+        <div class="dienst-card reveal d2">
+            <div class="dienst-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a15 15 0 010 20M12 2a15 15 0 000 20M2 12h20"/></svg></div>
+            <div class="dienst-name">Kleuren</div>
+            <div class="dienst-price">&euro;95</div>
+            <div class="dienst-desc">Volledige kleurbehandeling met premium, ammoniavrije producten.</div>
+        </div>
+        <div class="dienst-card reveal d1">
+            <div class="dienst-icon"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M5.636 5.636l12.728 12.728M18.364 5.636L5.636 18.364"/></svg></div>
+            <div class="dienst-name">Highlights / Balayage</div>
+            <div class="dienst-price">&euro;120</div>
+            <div class="dienst-desc">Handgeschilderde highlights voor een natuurlijk, lumineus effect.</div>
+        </div>
+        <div class="dienst-card reveal d2">
+            <div class="dienst-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg></div>
+            <div class="dienst-name">Bruidsstyling</div>
+            <div class="dienst-price">&euro;150</div>
+            <div class="dienst-desc">Jouw droomkapsel op de mooiste dag. Inclusief proefkapsel.</div>
+        </div>
+        <div class="dienst-card reveal d3">
+            <div class="dienst-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="4" r="2"/><path d="M12 6v4M8 10h8l-1 8H9l-1-8z"/><path d="M9 18l-1 4M15 18l1 4"/></svg></div>
+            <div class="dienst-name">Kinderknippen</div>
+            <div class="dienst-price">&euro;18</div>
+            <div class="dienst-desc">Leuk en stressvrij knippen voor de kleintjes.</div>
+        </div>
+    </div>
+</section>
+
+<!-- wave -->
+<div class="wave" style="background:var(--dark)"><svg viewBox="0 0 1440 100" preserveAspectRatio="none"><path fill="#FDF8F5" d="M0,0 C180,80 540,30 900,70 C1080,85 1300,40 1440,60L1440,100 0,100Z"/></svg></div>
+
+<!-- ══════ GALERIJ ══════ -->
+<section class="s-cream section-pad" id="galerij">
+    <div class="section-header reveal">
+        <p class="label">Inspiratie</p>
+        <h2>Ons Werk</h2>
+        <div class="gold-line"></div>
+        <p>Bewegend beeld van onze mooiste creaties.</p>
+    </div>
+    <div class="galerij-grid">
+        <div class="vcell reveal"><video autoplay muted loop playsinline preload="none"><source src="https://videos.pexels.com/video-files/6648284/6648284-hd_1080_2048_25fps.mp4" type="video/mp4"></video><div class="vcell-overlay"><span>Strak & Donker</span></div></div>
+        <div class="vcell reveal d1"><video autoplay muted loop playsinline preload="none"><source src="https://videos.pexels.com/video-files/6778815/6778815-hd_2048_1080_24fps.mp4" type="video/mp4"></video><div class="vcell-overlay"><span>Gedurfd Editorial</span></div></div>
+        <div class="vcell reveal d2"><video autoplay muted loop playsinline preload="none"><source src="https://videos.pexels.com/video-files/8102247/8102247-sd_960_506_25fps.mp4" type="video/mp4"></video><div class="vcell-overlay"><span>Gouden Uur</span></div></div>
+        <div class="vcell reveal"><video autoplay muted loop playsinline preload="none"><source src="https://videos.pexels.com/video-files/4769795/4769795-sd_640_360_25fps.mp4" type="video/mp4"></video><div class="vcell-overlay"><span>Beweging & Flow</span></div></div>
+        <div class="vcell reveal d1"><video autoplay muted loop playsinline preload="none"><source src="https://videos.pexels.com/video-files/8331913/8331913-sd_960_506_25fps.mp4" type="video/mp4"></video><div class="vcell-overlay"><span>Textuur Spel</span></div></div>
+        <div class="vcell reveal d2"><video autoplay muted loop playsinline preload="none"><source src="https://videos.pexels.com/video-files/8102670/8102670-sd_960_506_25fps.mp4" type="video/mp4"></video><div class="vcell-overlay"><span>Verse Coupe</span></div></div>
+        <div class="vcell reveal d1"><video autoplay muted loop playsinline preload="none"><source src="https://videos.pexels.com/video-files/8955912/8955912-sd_640_360_24fps.mp4" type="video/mp4"></video><div class="vcell-overlay"><span>Intiem Moment</span></div></div>
+        <div class="vcell reveal d2"><video autoplay muted loop playsinline preload="none"><source src="https://videos.pexels.com/video-files/7957699/7957699-hd_1080_1920_30fps.mp4" type="video/mp4"></video><div class="vcell-overlay"><span>Studio Sfeer</span></div></div>
+    </div>
+</section>
+
+<!-- ══════ VIDEO BREAK ══════ -->
+<div class="video-break">
+    <video autoplay muted loop playsinline preload="none">
+        <source src="https://videos.pexels.com/video-files/4769795/4769795-sd_640_360_25fps.mp4" type="video/mp4">
+    </video>
+    <div class="vb-content">
+        <h2 class="reveal">"Jouw haar, ons canvas"</h2>
+        <p class="reveal d1">Elk kapsel vertelt een verhaal</p>
+    </div>
+</div>
+
+<!-- ══════ AFSPRAAK ══════ -->
+<section class="s-cream section-pad" id="afspraak">
+    <div class="afspraak-inner">
+        <div class="section-header reveal">
+            <p class="label">Reserveren</p>
+            <h2>Afspraak Maken</h2>
+            <div class="gold-line"></div>
+            <p>Plan je bezoek en wij zorgen voor de rest.</p>
+        </div>
+        <form class="afspraak-form reveal" id="bookingForm" novalidate>
+            <div class="form-row">
+                <div class="form-group"><label for="b-naam">Naam *</label><input type="text" id="b-naam" placeholder="Je volledige naam" required><div class="form-error">Vul je naam in</div></div>
+                <div class="form-group"><label for="b-email">E-mailadres *</label><input type="email" id="b-email" placeholder="je@email.nl" required><div class="form-error">Vul een geldig e-mailadres in</div></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label for="b-tel">Telefoonnummer</label><input type="tel" id="b-tel" placeholder="06-12345678"><div class="form-error">Vul een geldig telefoonnummer in</div></div>
+                <div class="form-group"><label for="b-dienst">Gewenste dienst *</label><select id="b-dienst" required><option value="" disabled selected>Kies een dienst</option><option>Dames knippen</option><option>Heren knippen</option><option>Kleuren (volledig)</option><option>Highlights / Balayage</option><option>Bruidsstyling</option><option>Kinderknippen</option></select><div class="form-error">Selecteer een dienst</div></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label for="b-datum">Voorkeursdatum *</label><input type="date" id="b-datum" required><div class="form-error">Kies een datum</div></div>
+                <div class="form-group"><label for="b-tijd">Voorkeurstijd *</label><select id="b-tijd" required><option value="" disabled selected>Kies een tijd</option><option>09:00</option><option>09:30</option><option>10:00</option><option>10:30</option><option>11:00</option><option>11:30</option><option>12:00</option><option>12:30</option><option>13:00</option><option>13:30</option><option>14:00</option><option>14:30</option><option>15:00</option><option>15:30</option><option>16:00</option><option>16:30</option><option>17:00</option><option>17:30</option><option>18:00</option></select><div class="form-error">Kies een tijdstip</div></div>
+            </div>
+            <div class="form-group"><label for="b-opm">Opmerkingen</label><textarea id="b-opm" placeholder="Speciale wensen of vragen?"></textarea></div>
+            <button type="submit" class="btn-submit">Afspraak Bevestigen</button>
+            <div class="form-success" id="formSuccess"><h3>Bedankt!</h3><p>Je afspraak is ontvangen. We nemen zo snel mogelijk contact met je op.</p></div>
+        </form>
+    </div>
+</section>
+
+<!-- wave -->
+<div class="wave" style="background:var(--cream)"><svg viewBox="0 0 1440 100" preserveAspectRatio="none"><path fill="#F5E6E0" d="M0,100 C360,20 720,80 1080,40 C1260,20 1380,60 1440,50L1440,100 0,100Z"/></svg></div>
+
+<!-- ══════ CONTACT ══════ -->
+<section class="s-blush section-pad" id="contact">
+    <div class="contact-inner">
+        <div class="reveal-l">
+            <div class="contact-block"><h3>Openingstijden</h3><p class="subtitle">Wij staan voor je klaar</p></div>
+            <table class="hours-table">
+                <tr><td>Maandag</td><td class="closed">Gesloten</td></tr>
+                <tr><td>Dinsdag</td><td>09:00 — 18:00</td></tr>
+                <tr><td>Woensdag</td><td>09:00 — 18:00</td></tr>
+                <tr><td>Donderdag</td><td>09:00 — 18:00</td></tr>
+                <tr><td>Vrijdag</td><td>09:00 — 18:00</td></tr>
+                <tr><td>Zaterdag</td><td>09:00 — 17:00</td></tr>
+                <tr><td>Zondag</td><td class="closed">Gesloten</td></tr>
+            </table>
+        </div>
+        <div class="reveal-r">
+            <div class="contact-block"><h3>Contact</h3><p class="subtitle">We horen graag van je</p></div>
+            <div class="contact-detail"><div class="contact-detail-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div><p>Keizersgracht 142, Amsterdam</p></div>
+            <div class="contact-detail"><div class="contact-detail-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg></div><p><a href="tel:0201234567">020-1234567</a></p></div>
+            <div class="contact-detail"><div class="contact-detail-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><p><a href="mailto:info@atelierhaar.nl">info@atelierhaar.nl</a></p></div>
+            <div class="social-links">
+                <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+                <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- wave -->
+<div class="wave" style="background:var(--blush)"><svg viewBox="0 0 1440 100" preserveAspectRatio="none"><path fill="#FDF8F5" d="M0,0 C480,90 960,20 1440,70L1440,100 0,100Z"/></svg></div>
+
+<!-- ══════ TESTIMONIALS ══════ -->
+<section class="s-cream section-pad" id="reviews">
+    <div class="section-header reveal"><p class="label">Ervaringen</p><h2>Wat onze klanten zeggen</h2><div class="gold-line"></div></div>
+    <div class="testimonials-grid">
+        <div class="testimonial-card reveal">
+            <div class="testimonial-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+            <p>Wat een fijne ervaring! Ik voelde me meteen op m'n gemak. Mijn balayage is precies geworden wat ik in gedachten had. Echt een aanrader.</p>
+            <div class="testimonial-author"><div class="testimonial-avatar" style="background:var(--rose)">S</div><div class="testimonial-author-info"><h5>Sophie de Vries</h5><span>Vaste klant sinds 2022</span></div></div>
+        </div>
+        <div class="testimonial-card reveal d1">
+            <div class="testimonial-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+            <p>Eindelijk een kapper die naar je luistert! De sfeer is geweldig en het resultaat elke keer weer top. Mijn zoontje vindt het hier ook fantastisch.</p>
+            <div class="testimonial-author"><div class="testimonial-avatar" style="background:var(--gold)">M</div><div class="testimonial-author-info"><h5>Mark Jansen</h5><span>Vaste klant sinds 2021</span></div></div>
+        </div>
+        <div class="testimonial-card reveal d2">
+            <div class="testimonial-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+            <p>Mijn bruidskapsel was werkelijk prachtig. Het hele team straalt passie uit. Ze hebben echt een atelier gecreëerd — geen gewone kapsalon.</p>
+            <div class="testimonial-author"><div class="testimonial-avatar" style="background:var(--text)">L</div><div class="testimonial-author-info"><h5>Lisa van den Berg</h5><span>Bruidsstyling 2025</span></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- Scroll to top -->
+<button class="scroll-top" id="scrollTop" aria-label="Terug naar boven">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<!-- ══════ FOOTER ══════ -->
+<footer>
+    <div class="footer-inner">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="#" class="logo">Atelier <em>Haar</em></a>
+                <p>Waar stijl begint. Al meer dan 12 jaar het creatieve thuis voor iedereen die houdt van mooi haar, in het hart van Amsterdam.</p>
+            </div>
+            <div class="footer-col"><h4>Navigatie</h4><ul><li><a href="#over-ons">Over Ons</a></li><li><a href="#diensten">Diensten</a></li><li><a href="#galerij">Galerij</a></li><li><a href="#reviews">Reviews</a></li></ul></div>
+            <div class="footer-col"><h4>Diensten</h4><ul><li><a href="#diensten">Dames Knippen</a></li><li><a href="#diensten">Heren Knippen</a></li><li><a href="#diensten">Kleuren</a></li><li><a href="#diensten">Bruidsstyling</a></li></ul></div>
+            <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:0201234567">020-1234567</a></li><li><a href="mailto:info@atelierhaar.nl">info@atelierhaar.nl</a></li><li><a href="#">Keizersgracht 142</a></li><li><a href="#">Amsterdam</a></li></ul></div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Atelier Haar &mdash; Amsterdam</p>
+            <a href="https://plaiwrks.nl" target="_blank" rel="noopener" class="pw-watermark" aria-label="Gemaakt door Plaiwrks">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs><linearGradient id="pwg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#c97bdb"/><stop offset="50%" stop-color="#d4739b"/><stop offset="100%" stop-color="#e8a87c"/></linearGradient></defs>
+                    <circle cx="50" cy="50" r="48" fill="url(#pwg)"/>
+                    <text x="50" y="62" text-anchor="middle" font-family="Georgia,serif" font-size="42" font-weight="700" font-style="italic" fill="white">pw</text>
+                </svg>
+                <span>by Plaiwrks</span>
+            </a>
+            <div class="footer-social">
+                <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+                <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+var nav=document.getElementById('mainNav');
+window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>80)});
+
+var ham=document.getElementById('hamburger'),nl=document.getElementById('navLinks');
+ham.addEventListener('click',function(){ham.classList.toggle('active');nl.classList.toggle('active')});
+document.querySelectorAll('.nav-links a').forEach(function(a){a.addEventListener('click',function(){ham.classList.remove('active');nl.classList.remove('active')})});
+
+var obs=new IntersectionObserver(function(e){e.forEach(function(en){if(en.isIntersecting)en.target.classList.add('vis')})},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(function(el){obs.observe(el)});
+
+var heroVid=document.querySelector('.hero-video-bg video');
+var heroH=document.querySelector('.hero').offsetHeight;
+window.addEventListener('scroll',function(){
+    var p=Math.min(window.scrollY/heroH,1);
+    heroVid.style.filter='brightness('+(0.42-p*0.15)+') saturate(0.8)';
+    heroVid.style.transform='scale(1.08) translateY('+window.scrollY*0.12+'px)';
+});
+
+var form=document.getElementById('bookingForm');
+form.addEventListener('submit',function(e){
+    e.preventDefault();var v=true;
+    form.querySelectorAll('.form-group').forEach(function(g){g.classList.remove('error')});
+    var n=document.getElementById('b-naam');if(!n.value.trim()){n.closest('.form-group').classList.add('error');v=false}
+    var em=document.getElementById('b-email');if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em.value)){em.closest('.form-group').classList.add('error');v=false}
+    var t=document.getElementById('b-tel');if(t.value.trim()&&!/^[\d\s\-+()]{7,15}$/.test(t.value.trim())){t.closest('.form-group').classList.add('error');v=false}
+    var d=document.getElementById('b-dienst');if(!d.value){d.closest('.form-group').classList.add('error');v=false}
+    var da=document.getElementById('b-datum');if(!da.value){da.closest('.form-group').classList.add('error');v=false}
+    var ti=document.getElementById('b-tijd');if(!ti.value){ti.closest('.form-group').classList.add('error');v=false}
+    if(v){form.querySelectorAll('.form-row,.form-group,.btn-submit').forEach(function(f){f.style.display='none'});document.getElementById('formSuccess').style.display='block'}
+});
+document.getElementById('b-datum').setAttribute('min',new Date().toISOString().split('T')[0]);
+
+// Scroll to top button
+var scrollTopBtn = document.getElementById('scrollTop');
+window.addEventListener('scroll', function() {
+    scrollTopBtn.classList.toggle('visible', window.scrollY > 600);
+});
+scrollTopBtn.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Lazy load galerij videos — only play when visible
+var videoObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+        var video = entry.target;
+        if (entry.isIntersecting) {
+            video.play().catch(function() {});
+        } else {
+            video.pause();
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.galerij-grid video, .video-break video').forEach(function(video) {
+    video.pause();
+    videoObserver.observe(video);
+});
+</script>
+
+</body>
+</html>

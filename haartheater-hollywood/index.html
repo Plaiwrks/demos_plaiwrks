@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atelier Haar — Where Beauty Takes Center Stage</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap');
+
+        /* ═══════════ RESET & BASE ═══════════ */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --black: #0a0a0a;
+            --dark: #111111;
+            --darker: #1a1a1a;
+            --neon: #ff2d78;
+            --neon-gold: #ffd700;
+            --neon-glow: 0 0 20px rgba(255, 45, 120, 0.5), 0 0 40px rgba(255, 45, 120, 0.2);
+            --neon-gold-glow: 0 0 20px rgba(255, 215, 0, 0.5), 0 0 40px rgba(255, 215, 0, 0.2);
+            --white: #f5f5f5;
+            --gray: #888;
+            --serif: 'Playfair Display', Georgia, serif;
+            --sans: 'Inter', -apple-system, sans-serif;
+        }
+
+        html {
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: var(--sans);
+            background: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ═══════════ SCROLL SNAP SECTIONS ═══════════ */
+        .section {
+            min-height: 100vh;
+            scroll-snap-align: start;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* ═══════════ SECTION FADE EDGES ═══════════ */
+        .section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 120px;
+            background: linear-gradient(to bottom, transparent, var(--black));
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: linear-gradient(to top, transparent, var(--black));
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* ═══════════ SCROLL PROGRESS DOTS ═══════════ */
+        .scroll-dots {
+            position: fixed;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .scroll-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            border: 1px solid transparent;
+        }
+
+        .scroll-dot.active {
+            background: var(--neon);
+            box-shadow: var(--neon-glow);
+            border-color: var(--neon);
+            transform: scale(1.3);
+        }
+
+        .scroll-dot:hover {
+            background: rgba(255, 45, 120, 0.5);
+        }
+
+        /* ═══════════ SPARKLE PARTICLES (CANVAS) ═══════════ */
+        #sparkle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* ═══════════ HERO ═══════════ */
+        .hero {
+            background: var(--black);
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .hero-video-wrap {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .hero-video-wrap video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.35;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, transparent 30%, var(--black) 80%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            padding: 0 24px;
+            max-width: 900px;
+        }
+
+        .hero-title {
+            font-family: var(--serif);
+            font-weight: 900;
+            font-size: clamp(3rem, 10vw, 7rem);
+            line-height: 1;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+        }
+
+        .hero-title .letter {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(60px) rotateX(40deg);
+            animation: letterDrop 0.6s forwards;
+        }
+
+        .hero-title .space {
+            display: inline-block;
+            width: 0.3em;
+        }
+
+        @keyframes letterDrop {
+            to {
+                opacity: 1;
+                transform: translateY(0) rotateX(0deg);
+            }
+        }
+
+        .hero-tagline {
+            font-family: var(--sans);
+            font-weight: 300;
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
+            color: var(--gray);
+            margin-bottom: 40px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeUp 1s 1.5s forwards;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 16px 48px;
+            font-family: var(--sans);
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--black);
+            background: var(--neon);
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeUp 1s 2s forwards;
+        }
+
+        .cta-btn:hover {
+            box-shadow: var(--neon-glow);
+            transform: translateY(-2px);
+        }
+
+        .cta-btn.pulse {
+            animation: fadeUp 1s 2s forwards, pulseGlow 2s 3s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 45, 120, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(255, 45, 120, 0.6), 0 0 60px rgba(255, 45, 120, 0.3); }
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ═══════════ OVER ONS ═══════════ */
+        .over-ons {
+            background: var(--dark);
+        }
+
+        .over-ons-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            max-width: 1200px;
+            padding: 80px 40px;
+            align-items: center;
+            position: relative;
+            z-index: 3;
+        }
+
+        .over-ons-text {
+            opacity: 0;
+            transform: translateX(-80px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .over-ons-text.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .over-ons-img {
+            opacity: 0;
+            transform: translateX(80px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+            transition-delay: 0.2s;
+        }
+
+        .over-ons-img.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .over-ons-img img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            filter: grayscale(30%) contrast(1.1);
+        }
+
+        .section-label {
+            font-family: var(--sans);
+            font-weight: 500;
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--neon);
+            margin-bottom: 16px;
+        }
+
+        .section-heading {
+            font-family: var(--serif);
+            font-weight: 700;
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            line-height: 1.1;
+            margin-bottom: 24px;
+        }
+
+        .section-text {
+            font-weight: 300;
+            font-size: 1rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 500px;
+        }
+
+        /* ═══════════ DIENSTEN ═══════════ */
+        .diensten {
+            background: var(--black);
+            flex-direction: column;
+            padding: 80px 24px;
+        }
+
+        .diensten-header {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .diensten-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 1100px;
+            width: 100%;
+            position: relative;
+            z-index: 3;
+        }
+
+        .dienst-card {
+            position: relative;
+            height: 320px;
+            overflow: hidden;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .dienst-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dienst-card:nth-child(2) { transition-delay: 0.15s; }
+        .dienst-card:nth-child(3) { transition-delay: 0.3s; }
+        .dienst-card:nth-child(4) { transition-delay: 0.45s; }
+
+        .dienst-card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .dienst-card:hover video {
+            transform: scale(1.05);
+        }
+
+        .dienst-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%);
+        }
+
+        .dienst-card:hover {
+            border: 1px solid var(--neon);
+            box-shadow: var(--neon-glow);
+        }
+
+        .dienst-card-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 28px;
+            z-index: 2;
+        }
+
+        .dienst-naam {
+            font-family: var(--serif);
+            font-weight: 700;
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+        }
+
+        .dienst-prijs {
+            font-family: var(--sans);
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--neon);
+        }
+
+        .dienst-level-note {
+            font-size: 0.75rem;
+            color: var(--gray);
+            margin-top: 4px;
+        }
+
+        .dienst-details {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.5);
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        /* ═══════════ PRIJZEN ═══════════ */
+        .prijzen {
+            background: var(--darker);
+            flex-direction: column;
+            padding: 80px 24px;
+        }
+
+        .prijzen-header {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .prijzen-container {
+            max-width: 1000px;
+            width: 100%;
+            position: relative;
+            z-index: 3;
+        }
+
+        .prijs-categorie {
+            margin-bottom: 48px;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .prijs-categorie.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .prijs-categorie h3 {
+            font-family: var(--serif);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--neon);
+        }
+
+        .prijs-tiers {
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            gap: 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .prijs-row {
+            display: contents;
+        }
+
+        .prijs-row > * {
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.9rem;
+        }
+
+        .prijs-row .behandeling {
+            color: rgba(255,255,255,0.8);
+            font-weight: 400;
+        }
+
+        .prijs-row .tier-prijs {
+            text-align: center;
+            color: rgba(255,255,255,0.6);
+            font-weight: 300;
+        }
+
+        .prijs-tier-header {
+            display: contents;
+        }
+
+        .prijs-tier-header > * {
+            padding: 14px 16px;
+            font-weight: 600;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            text-align: center;
+            color: var(--neon);
+            border-bottom: 1px solid rgba(255, 45, 120, 0.2);
+        }
+
+        .prijs-tier-header > *:first-child {
+            text-align: left;
+            color: transparent;
+        }
+
+        /* ═══════════ SFEERBEELDEN ═══════════ */
+        .sfeer {
+            background: var(--dark);
+            flex-direction: column;
+            padding: 80px 24px;
+        }
+
+        .sfeer-header {
+            text-align: center;
+            margin-bottom: 48px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .sfeer-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 220px);
+            gap: 12px;
+            max-width: 1000px;
+            width: 100%;
+            position: relative;
+            z-index: 3;
+        }
+
+        .sfeer-grid .sfeer-item:first-child {
+            grid-row: span 2;
+        }
+
+        .sfeer-item {
+            overflow: hidden;
+            position: relative;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .sfeer-item.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .sfeer-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(20%) contrast(1.1);
+            transition: all 0.6s ease;
+        }
+
+        .sfeer-item:hover img {
+            filter: grayscale(0%) contrast(1.1);
+            transform: scale(1.05);
+        }
+
+        /* ═══════════ TESTIMONIALS ═══════════ */
+        .testimonials {
+            background: var(--black);
+            flex-direction: column;
+            padding: 80px 24px;
+        }
+
+        .testimonials-header {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            max-width: 1100px;
+            width: 100%;
+            position: relative;
+            z-index: 3;
+        }
+
+        .testimonial-card {
+            padding: 40px 32px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            position: relative;
+            opacity: 0;
+            transition: all 0.8s ease;
+        }
+
+        .testimonial-card.visible {
+            animation: glitchFadeIn 1s forwards;
+        }
+
+        .testimonial-card:nth-child(2).visible { animation-delay: 0.2s; }
+        .testimonial-card:nth-child(3).visible { animation-delay: 0.4s; }
+
+        @keyframes glitchFadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            15% { opacity: 0.5; transform: translateY(10px) skewX(-2deg); }
+            30% { opacity: 0.3; transform: translateY(12px) skewX(1deg); }
+            50% { opacity: 0.7; transform: translateY(5px) skewX(-0.5deg); }
+            70% { opacity: 0.9; transform: translateY(2px); }
+            100% { opacity: 1; transform: translateY(0) skewX(0deg); }
+        }
+
+        .testimonial-quote {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .testimonial-quote::before {
+            content: '\201C';
+            font-size: 3rem;
+            color: var(--neon);
+            display: block;
+            margin-bottom: 8px;
+            line-height: 1;
+        }
+
+        .testimonial-author {
+            font-family: var(--sans);
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: var(--neon);
+            letter-spacing: 0.1em;
+        }
+
+        /* ═══════════ LOCATIES ═══════════ */
+        .locaties {
+            background: var(--darker);
+            flex-direction: column;
+            padding: 80px 24px;
+        }
+
+        .locaties-header {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .locaties-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            max-width: 1100px;
+            width: 100%;
+            position: relative;
+            z-index: 3;
+        }
+
+        .locatie-card {
+            padding: 40px 32px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.02);
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .locatie-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .locatie-card:nth-child(2) { transition-delay: 0.15s; }
+        .locatie-card:nth-child(3) { transition-delay: 0.3s; }
+
+        .locatie-naam {
+            font-family: var(--serif);
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--neon);
+        }
+
+        .locatie-detail {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 14px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.5;
+        }
+
+        .locatie-detail i {
+            color: var(--neon);
+            width: 16px;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        .locatie-openingstijden {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .locatie-openingstijden h4 {
+            font-family: var(--sans);
+            font-weight: 600;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--white);
+            margin-bottom: 10px;
+        }
+
+        .openingstijd-rij {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.5);
+            padding: 3px 0;
+        }
+
+        /* ═══════════ CONTACT ═══════════ */
+        .contact {
+            background: var(--black);
+            flex-direction: column;
+            padding: 80px 24px;
+        }
+
+        .contact-inner {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 3;
+        }
+
+        .contact-email {
+            font-family: var(--serif);
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--white);
+            margin: 24px 0 12px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-email:hover {
+            color: var(--neon);
+        }
+
+        .contact-phone {
+            font-size: 1rem;
+            color: var(--gray);
+            margin-bottom: 48px;
+        }
+
+        .contact-phone a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-phone a:hover {
+            color: var(--neon);
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            text-align: left;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gray);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 14px 16px;
+            color: var(--white);
+            font-family: var(--sans);
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+            outline: none;
+            width: 100%;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--neon);
+        }
+
+        .form-group select option {
+            background: var(--dark);
+            color: var(--white);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-error {
+            font-size: 0.78rem;
+            color: var(--neon);
+            display: none;
+        }
+
+        .form-group.error .form-error {
+            display: block;
+        }
+
+        .form-group.error input,
+        .form-group.error textarea,
+        .form-group.error select {
+            border-color: var(--neon);
+        }
+
+        .contact-submit {
+            margin-top: 8px;
+            animation: pulseGlow 2s infinite;
+        }
+
+        .form-success {
+            display: none;
+            text-align: center;
+            padding: 32px;
+        }
+
+        .form-success.show {
+            display: block;
+        }
+
+        .form-success h3 {
+            font-family: var(--serif);
+            font-size: 1.6rem;
+            margin-bottom: 12px;
+        }
+
+        .form-success p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        /* ═══════════ FOOTER ═══════════ */
+        .footer {
+            padding: 40px 24px;
+            text-align: center;
+            background: var(--black);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-brand {
+            font-family: var(--serif);
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+        }
+
+        .footer-socials {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 16px;
+        }
+
+        .footer-socials a {
+            color: var(--gray);
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .footer-socials a:hover {
+            color: var(--neon);
+        }
+
+        .footer-copy {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* ═══════════ RESPONSIVE ═══════════ */
+        @media (max-width: 768px) {
+            html {
+                scroll-snap-type: y proximity;
+            }
+
+            .scroll-dots {
+                right: 12px;
+                gap: 10px;
+            }
+
+            .scroll-dot {
+                width: 8px;
+                height: 8px;
+            }
+
+            .over-ons-inner {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                padding: 60px 24px;
+            }
+
+            .over-ons-img {
+                order: -1;
+            }
+
+            .over-ons-img img {
+                height: 300px;
+            }
+
+            .diensten-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dienst-card {
+                height: 260px;
+            }
+
+            .prijs-tiers {
+                grid-template-columns: 2fr repeat(3, 1fr);
+                font-size: 0.8rem;
+            }
+
+            .prijs-row > * {
+                padding: 10px 8px;
+                font-size: 0.78rem;
+            }
+
+            .prijs-tier-header > * {
+                font-size: 0.6rem;
+                padding: 10px 8px;
+            }
+
+            .sfeer-grid {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: repeat(3, 180px);
+            }
+
+            .sfeer-grid .sfeer-item:first-child {
+                grid-row: span 1;
+                grid-column: span 2;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .locaties-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2.6rem;
+            }
+
+            .prijs-tiers {
+                grid-template-columns: 1.5fr repeat(3, 1fr);
+            }
+
+            .prijs-row > * {
+                padding: 8px 4px;
+                font-size: 0.7rem;
+            }
+
+            .prijs-tier-header > * {
+                font-size: 0.55rem;
+                letter-spacing: 0.05em;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <!-- SPARKLE CANVAS -->
+    <canvas id="sparkle-canvas"></canvas>
+
+    <!-- SCROLL DOTS -->
+    <nav class="scroll-dots" aria-label="Scroll navigatie">
+        <div class="scroll-dot active" data-section="0" title="Hero"></div>
+        <div class="scroll-dot" data-section="1" title="Over ons"></div>
+        <div class="scroll-dot" data-section="2" title="Diensten"></div>
+        <div class="scroll-dot" data-section="3" title="Prijzen"></div>
+        <div class="scroll-dot" data-section="4" title="Sfeer"></div>
+        <div class="scroll-dot" data-section="5" title="Reviews"></div>
+        <div class="scroll-dot" data-section="6" title="Locaties"></div>
+        <div class="scroll-dot" data-section="7" title="Contact"></div>
+    </nav>
+
+    <!-- ═══════════ HERO ═══════════ -->
+    <section class="section hero" id="hero">
+        <div class="hero-video-wrap">
+            <video autoplay muted loop playsinline poster="">
+                <source src="https://videos.pexels.com/video-files/8087668/8087668-uhd_4096_2160_24fps.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title" id="hero-title"></h1>
+            <p class="hero-tagline">Where beauty takes center stage</p>
+            <a href="#contact" class="cta-btn pulse">Boek je transformatie</a>
+        </div>
+    </section>
+
+    <!-- ═══════════ OVER ONS ═══════════ -->
+    <section class="section over-ons" id="over-ons">
+        <div class="over-ons-inner">
+            <div class="over-ons-text animate-on-scroll">
+                <p class="section-label">Over ons</p>
+                <h2 class="section-heading">Vakmanschap dat je ziet.<br>Precisie die je voelt.</h2>
+                <p class="section-text">
+                    Atelier Haar is niet zomaar een salon. Wij zijn een podium waar haar de hoofdrol speelt.
+                    Elke transformatie begint met luisteren — naar jouw verhaal, jouw stijl, jouw ambitie.
+                    Onze stylisten zijn geen kappers, het zijn kunstenaars. Getraind in onze eigen academie,
+                    geobsedeerd door perfectie, gedreven door passie.
+                    <br><br>
+                    Echte schoonheid is altijd persoonlijk. Daarom werken wij met drie niveaus van expertise
+                    — Stylist, Creative Stylist en Master Stylist — zodat jij altijd de aandacht krijgt die
+                    bij jou past.
+                </p>
+            </div>
+            <div class="over-ons-img animate-on-scroll">
+                <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&q=80" alt="Atelier Haar sfeer" loading="lazy">
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ DIENSTEN ═══════════ -->
+    <section class="section diensten" id="diensten">
+        <div class="diensten-header">
+            <p class="section-label">Onze diensten</p>
+            <h2 class="section-heading">Elke look vertelt een verhaal</h2>
+        </div>
+        <div class="diensten-grid">
+            <div class="dienst-card animate-on-scroll">
+                <video autoplay muted loop playsinline>
+                    <source src="https://videos.pexels.com/video-files/6648284/6648284-hd_1080_2048_25fps.mp4" type="video/mp4">
+                </video>
+                <div class="dienst-card-info">
+                    <h3 class="dienst-naam">Knippen & Stylen</h3>
+                    <p class="dienst-prijs">Vanaf €54</p>
+                    <p class="dienst-details">Wassen, knippen, stylen — van precision cut tot bold statement</p>
+                </div>
+            </div>
+            <div class="dienst-card animate-on-scroll">
+                <video autoplay muted loop playsinline>
+                    <source src="https://videos.pexels.com/video-files/6778815/6778815-hd_2048_1080_24fps.mp4" type="video/mp4">
+                </video>
+                <div class="dienst-card-info">
+                    <h3 class="dienst-naam">Kleuren & Highlights</h3>
+                    <p class="dienst-prijs">Vanaf €85</p>
+                    <p class="dienst-details">Balayage, highlights, full colour — meesterlijk gemixte tinten</p>
+                </div>
+            </div>
+            <div class="dienst-card animate-on-scroll">
+                <video autoplay muted loop playsinline>
+                    <source src="https://videos.pexels.com/video-files/8102247/8102247-sd_960_506_25fps.mp4" type="video/mp4">
+                </video>
+                <div class="dienst-card-info">
+                    <h3 class="dienst-naam">Haircare & Treatments</h3>
+                    <p class="dienst-prijs">Vanaf €45</p>
+                    <p class="dienst-details">Intensieve verzorging, keratine, reconstructie — voor gezond glanzend haar</p>
+                </div>
+            </div>
+            <div class="dienst-card animate-on-scroll">
+                <video autoplay muted loop playsinline>
+                    <source src="https://videos.pexels.com/video-files/7957699/7957699-hd_1080_1920_30fps.mp4" type="video/mp4">
+                </video>
+                <div class="dienst-card-info">
+                    <h3 class="dienst-naam">Bridal & Gala</h3>
+                    <p class="dienst-prijs">Vanaf €120</p>
+                    <p class="dienst-details">Opsteek, glamour waves, red carpet looks — voor jouw grote moment</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ PRIJZEN ═══════════ -->
+    <section class="section prijzen" id="prijzen">
+        <div class="prijzen-header">
+            <p class="section-label">Prijzen</p>
+            <h2 class="section-heading">Tarieven per niveau</h2>
+            <p class="section-text" style="margin: 16px auto 0; text-align: center; max-width: 600px;">
+                Onze prijzen variëren per ervaringsniveau. Kies de stylist die bij jou past.
+            </p>
+        </div>
+        <div class="prijzen-container">
+            <!-- Knippen & Stylen -->
+            <div class="prijs-categorie animate-on-scroll">
+                <h3>Knippen & Stylen</h3>
+                <div class="prijs-tiers">
+                    <div class="prijs-tier-header">
+                        <span></span>
+                        <span>Stylist</span>
+                        <span>Creative</span>
+                        <span>Master</span>
+                    </div>
+                    <div class="prijs-row">
+                        <span class="behandeling">Knippen dames</span>
+                        <span class="tier-prijs">€54</span>
+                        <span class="tier-prijs">€64</span>
+                        <span class="tier-prijs">€79</span>
+                    </div>
+                    <div class="prijs-row">
+                        <span class="behandeling">Knippen heren</span>
+                        <span class="tier-prijs">€38</span>
+                        <span class="tier-prijs">€44</span>
+                        <span class="tier-prijs">€52</span>
+                    </div>
+                    <div class="prijs-row">
+                        <span class="behandeling">Knippen kinderen</span>
+                        <span class="tier-prijs">€28</span>
+                        <span class="tier-prijs">€32</span>
+                        <span class="tier-prijs">€38</span>
+                    </div>
+                    <div class="prijs-row">
+                        <span class="behandeling">Föhnen / Stylen</span>
+                        <span class="tier-prijs">€38</span>
+                        <span class="tier-prijs">€44</span>
+                        <span class="tier-prijs">€52</span>
+                    </div>
+                    <div class="prijs-row">
+                        <span class="behandeling">Knippen + Föhnen</span>
+                        <span class="tier-prijs">€78</span>
+                        <span class="tier-prijs">€92</span>
+                        <span class="tier-prijs">€110</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kleuren -->
+            <div class="prijs-categorie animate-on-scroll">
+                <h3>Kleuren</h3>
+                <div class="prijs-tiers">
+                    <div class="prijs-tier-header">
+                        <span></span>
+                        <span>Stylist</span>
+                        <span>Creative</span>
+                        <span>Master</span>
+                    </div>
+                    <div class="prijs-row">
+                        <span class="behandeling">Kleuring</span>
+                        <span class="tier-prijs">€65</span>
+                        <span class="tier-prijs">€75</span>
+                        <span class="tier-prijs">€89</span>
+                    </div>
+                    <div class="prijs-row">
+                        <span class="behandeling">Uitgroei kleuring</span>
+                        <span class="tier-prijs">€55</span>
+                        <span class="tier-prijs">€65</span>
+                        <span class="tier-prijs">€75</span>
+                    </div>
+                    <div class="prijs-row">
+                        <span class="behandeling">Highlights half</span>
+                        <span class="tier-prijs">€85</span>
+                        <span class="tier-prijs">€99</span>
+                        <span class="tier-prijs">€119</span>
+                    </div>
+                    <div class="prijs-row">
+                        <span class="behandeling">Highlights heel</span>
+                        <span class="tier-prijs">€110</span>
+                        <span class="tier-prijs">€130</span>
+                        <span class="tier-prijs">€155</span>
+                    </div>
+                    <div class="prijs-row">
+                        <span class="behandeling">Balayage</span>
+                        <span class="tier-prijs">€125</span>
+                        <span class="tier-prijs">€149</span>
+                        <span class="tier-prijs">€179</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Treatments -->
+            <div class="prijs-categorie animate-on-scroll">
+                <h3>Treatments & Extra's</h3>
+                <div class="prijs-tiers">
+                    <div class="prijs-tier-header">
+                        <span></span>
+                        <span>Stylist</span>
+                        <span>Creative</span>
+                        <span>Master</span>
+                    </div>
+                    <div class="prijs-row">
+                        <span class="behandeling">Keratine behandeling</span>
+                        <span class="tier-prijs">€150</span>
+                        <span class="tier-prijs">€175</span>
+                        <span class="tier-prijs">€199</span>
+                    </div>
+                    <div class="prijs-row">
+                        <span class="behandeling">Haar masker</span>
+                        <span class="tier-prijs">€25</span>
+                        <span class="tier-prijs">€25</span>
+                        <span class="tier-prijs">€25</span>
+                    </div>
+                    <div class="prijs-row">
+                        <span class="behandeling">Bridal styling</span>
+                        <span class="tier-prijs">—</span>
+                        <span class="tier-prijs">€149</span>
+                        <span class="tier-prijs">€189</span>
+                    </div>
+                    <div class="prijs-row">
+                        <span class="behandeling">Gala opsteek</span>
+                        <span class="tier-prijs">€85</span>
+                        <span class="tier-prijs">€99</span>
+                        <span class="tier-prijs">€120</span>
+                    </div>
+                    <div class="prijs-row">
+                        <span class="behandeling">Brow styling</span>
+                        <span class="tier-prijs">€25</span>
+                        <span class="tier-prijs">€25</span>
+                        <span class="tier-prijs">€30</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ SFEERBEELDEN ═══════════ -->
+    <section class="section sfeer" id="sfeer">
+        <div class="sfeer-header">
+            <p class="section-label">Sfeer</p>
+            <h2 class="section-heading">Backstage beauty</h2>
+        </div>
+        <div class="sfeer-grid">
+            <div class="sfeer-item animate-on-scroll">
+                <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&q=80" alt="Glamour look" loading="lazy">
+            </div>
+            <div class="sfeer-item animate-on-scroll">
+                <img src="https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?w=600&q=80" alt="Hair styling" loading="lazy">
+            </div>
+            <div class="sfeer-item animate-on-scroll">
+                <img src="https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=600&q=80" alt="Salon sfeer" loading="lazy">
+            </div>
+            <div class="sfeer-item animate-on-scroll">
+                <img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=600&q=80" alt="Kleuren expertise" loading="lazy">
+            </div>
+            <div class="sfeer-item animate-on-scroll">
+                <img src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=600&q=80" alt="Red carpet look" loading="lazy">
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ TESTIMONIALS ═══════════ -->
+    <section class="section testimonials" id="testimonials">
+        <div class="testimonials-header">
+            <p class="section-label">Reviews</p>
+            <h2 class="section-heading">Wat onze gasten zeggen</h2>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card animate-on-scroll">
+                <p class="testimonial-quote">
+                    Vanaf het moment dat ik binnenstapte wist ik: dit is anders.
+                    Mijn stylist luisterde echt, en het resultaat was beter dan ik durfde dromen.
+                </p>
+                <p class="testimonial-author">— Sophie M.</p>
+            </div>
+            <div class="testimonial-card animate-on-scroll">
+                <p class="testimonial-quote">
+                    Ik kwam voor een kleuring en vertrok als een compleet ander mens.
+                    De sfeer, de muziek, het vakmanschap — dit is geen kapper, dit is een ervaring.
+                </p>
+                <p class="testimonial-author">— Demi K.</p>
+            </div>
+            <div class="testimonial-card animate-on-scroll">
+                <p class="testimonial-quote">
+                    Al drie jaar trouw aan Atelier Haar. Nergens anders krijg ik die perfecte
+                    balayage. Ze begrijpen mijn haar beter dan ik zelf.
+                </p>
+                <p class="testimonial-author">— Yasmine R.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ LOCATIES ═══════════ -->
+    <section class="section locaties" id="locaties">
+        <div class="locaties-header">
+            <p class="section-label">Locaties</p>
+            <h2 class="section-heading">Drie podia, één visie</h2>
+        </div>
+        <div class="locaties-grid">
+            <div class="locatie-card animate-on-scroll">
+                <h3 class="locatie-naam">Amsterdam Centrum</h3>
+                <div class="locatie-detail">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Weteringschans 140<br>1017 XV Amsterdam</span>
+                </div>
+                <div class="locatie-detail">
+                    <i class="fas fa-phone"></i>
+                    <a href="tel:+31204955142" style="color: inherit; text-decoration: none;">+31 (0)20 495 51 42</a>
+                </div>
+                <div class="locatie-detail">
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:info@hethaartheater.nl" style="color: inherit; text-decoration: none;">info@hethaartheater.nl</a>
+                </div>
+                <div class="locatie-openingstijden">
+                    <h4>Openingstijden</h4>
+                    <div class="openingstijd-rij"><span>Ma, Di, Do, Vr</span><span>09:30 — 18:00</span></div>
+                    <div class="openingstijd-rij"><span>Woensdag</span><span>09:30 — 21:00</span></div>
+                    <div class="openingstijd-rij"><span>Zaterdag</span><span>09:30 — 17:00</span></div>
+                    <div class="openingstijd-rij"><span>Zondag</span><span>Gesloten</span></div>
+                </div>
+            </div>
+            <div class="locatie-card animate-on-scroll">
+                <h3 class="locatie-naam">Amsterdam Zuid</h3>
+                <div class="locatie-detail">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Beethovenstraat 96<br>1077 JN Amsterdam</span>
+                </div>
+                <div class="locatie-detail">
+                    <i class="fas fa-phone"></i>
+                    <a href="tel:+31202261088" style="color: inherit; text-decoration: none;">+31 (0)20 226 10 88</a>
+                </div>
+                <div class="locatie-detail">
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:info@hethaartheater.nl" style="color: inherit; text-decoration: none;">info@hethaartheater.nl</a>
+                </div>
+                <div class="locatie-openingstijden">
+                    <h4>Openingstijden</h4>
+                    <div class="openingstijd-rij"><span>Ma, Di, Do, Vr</span><span>09:30 — 18:00</span></div>
+                    <div class="openingstijd-rij"><span>Woensdag</span><span>09:30 — 21:00</span></div>
+                    <div class="openingstijd-rij"><span>Zaterdag</span><span>09:30 — 17:00</span></div>
+                    <div class="openingstijd-rij"><span>Zondag</span><span>Gesloten</span></div>
+                </div>
+            </div>
+            <div class="locatie-card animate-on-scroll">
+                <h3 class="locatie-naam">Heemstede</h3>
+                <div class="locatie-detail">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Jan van Goyenstraat 15<br>2102 CA Heemstede</span>
+                </div>
+                <div class="locatie-detail">
+                    <i class="fas fa-phone"></i>
+                    <a href="tel:+31235470555" style="color: inherit; text-decoration: none;">+31 (0)23 547 05 55</a>
+                </div>
+                <div class="locatie-detail">
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:info@hethaartheater.nl" style="color: inherit; text-decoration: none;">info@hethaartheater.nl</a>
+                </div>
+                <div class="locatie-openingstijden">
+                    <h4>Openingstijden</h4>
+                    <div class="openingstijd-rij"><span>Di, Wo, Vr</span><span>09:00 — 18:00</span></div>
+                    <div class="openingstijd-rij"><span>Donderdag</span><span>09:00 — 20:00</span></div>
+                    <div class="openingstijd-rij"><span>Zaterdag</span><span>09:00 — 17:00</span></div>
+                    <div class="openingstijd-rij"><span>Ma & Zo</span><span>Gesloten</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ CONTACT ═══════════ -->
+    <section class="section contact" id="contact">
+        <div class="contact-inner">
+            <p class="section-label">Contact</p>
+            <h2 class="section-heading">Klaar voor jouw transformatie?</h2>
+            <a href="mailto:info@hethaartheater.nl" class="contact-email">info@hethaartheater.nl</a>
+            <p class="contact-phone">
+                <a href="tel:+31204955142">+31 (0)20 495 51 42</a>
+            </p>
+
+            <form class="contact-form" id="contact-form" novalidate>
+                <div class="form-group">
+                    <label for="naam">Naam</label>
+                    <input type="text" id="naam" name="naam" required>
+                    <span class="form-error">Vul je naam in</span>
+                </div>
+                <div class="form-group">
+                    <label for="email">E-mailadres</label>
+                    <input type="email" id="email" name="email" required>
+                    <span class="form-error">Vul een geldig e-mailadres in</span>
+                </div>
+                <div class="form-group">
+                    <label for="telefoon">Telefoonnummer</label>
+                    <input type="tel" id="telefoon" name="telefoon">
+                    <span class="form-error">Vul een geldig telefoonnummer in</span>
+                </div>
+                <div class="form-group">
+                    <label for="locatie">Voorkeur locatie</label>
+                    <select id="locatie" name="locatie" required>
+                        <option value="">Kies een locatie</option>
+                        <option value="centrum">Amsterdam Centrum</option>
+                        <option value="zuid">Amsterdam Zuid</option>
+                        <option value="heemstede">Heemstede</option>
+                    </select>
+                    <span class="form-error">Kies een locatie</span>
+                </div>
+                <div class="form-group">
+                    <label for="bericht">Bericht</label>
+                    <textarea id="bericht" name="bericht" placeholder="Vertel ons over je gewenste look..." required></textarea>
+                    <span class="form-error">Schrijf een kort bericht</span>
+                </div>
+                <button type="submit" class="cta-btn contact-submit">Boek nu</button>
+            </form>
+
+            <div class="form-success" id="form-success">
+                <h3>Bedankt!</h3>
+                <p>We nemen zo snel mogelijk contact met je op om je afspraak te bevestigen.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ FOOTER ═══════════ -->
+    <footer class="footer">
+        <p class="footer-brand">Atelier Haar</p>
+        <div class="footer-socials">
+            <a href="https://www.instagram.com/het.haartheater/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.facebook.com/hethaartheater" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.tiktok.com/@het.haartheater" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Atelier Haar. Alle rechten voorbehouden.</p>
+    </footer>
+
+    <script>
+        /* ═══════════ HERO LETTER ANIMATION ═══════════ */
+        (function() {
+            const title = document.getElementById('hero-title');
+            const text = 'Atelier Haar';
+            let delay = 0.3;
+            text.split('').forEach(char => {
+                if (char === ' ') {
+                    title.innerHTML += '<span class="space"></span>';
+                } else {
+                    const span = document.createElement('span');
+                    span.className = 'letter';
+                    span.textContent = char;
+                    span.style.animationDelay = delay + 's';
+                    title.appendChild(span);
+                    delay += 0.08;
+                }
+            });
+        })();
+
+        /* ═══════════ INTERSECTION OBSERVER ═══════════ */
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+        /* ═══════════ SCROLL DOTS ═══════════ */
+        const sections = document.querySelectorAll('.section');
+        const dots = document.querySelectorAll('.scroll-dot');
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const index = Array.from(sections).indexOf(entry.target);
+                    dots.forEach((dot, i) => {
+                        dot.classList.toggle('active', i === index);
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+
+        sections.forEach(section => sectionObserver.observe(section));
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const idx = parseInt(dot.dataset.section);
+                sections[idx].scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        /* ═══════════ SPARKLE CANVAS ═══════════ */
+        (function() {
+            const canvas = document.getElementById('sparkle-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            const COUNT = 50;
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            for (let i = 0; i < COUNT; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2 + 0.5,
+                    speedX: (Math.random() - 0.5) * 0.3,
+                    speedY: (Math.random() - 0.5) * 0.3,
+                    opacity: Math.random() * 0.5 + 0.1,
+                    pulse: Math.random() * Math.PI * 2
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.x += p.speedX;
+                    p.y += p.speedY;
+                    p.pulse += 0.02;
+                    const alpha = p.opacity * (0.5 + 0.5 * Math.sin(p.pulse));
+
+                    if (p.x < 0) p.x = canvas.width;
+                    if (p.x > canvas.width) p.x = 0;
+                    if (p.y < 0) p.y = canvas.height;
+                    if (p.y > canvas.height) p.y = 0;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 215, 0, ${alpha})`;
+                    ctx.fill();
+
+                    // Glow
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size * 3, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 215, 0, ${alpha * 0.15})`;
+                    ctx.fill();
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        })();
+
+        /* ═══════════ FORM VALIDATION ═══════════ */
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let valid = true;
+
+            // Reset
+            this.querySelectorAll('.form-group').forEach(g => g.classList.remove('error'));
+
+            const naam = document.getElementById('naam');
+            if (!naam.value.trim()) {
+                naam.closest('.form-group').classList.add('error');
+                valid = false;
+            }
+
+            const email = document.getElementById('email');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email.value.trim())) {
+                email.closest('.form-group').classList.add('error');
+                valid = false;
+            }
+
+            const telefoon = document.getElementById('telefoon');
+            if (telefoon.value.trim() && !/^[+\d\s()-]{7,}$/.test(telefoon.value.trim())) {
+                telefoon.closest('.form-group').classList.add('error');
+                valid = false;
+            }
+
+            const locatie = document.getElementById('locatie');
+            if (!locatie.value) {
+                locatie.closest('.form-group').classList.add('error');
+                valid = false;
+            }
+
+            const bericht = document.getElementById('bericht');
+            if (!bericht.value.trim()) {
+                bericht.closest('.form-group').classList.add('error');
+                valid = false;
+            }
+
+            if (valid) {
+                this.style.display = 'none';
+                document.getElementById('form-success').classList.add('show');
+            }
+        });
+
+        /* ═══════════ SMOOTH SCROLL FOR ANCHORS ═══════════ */
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
